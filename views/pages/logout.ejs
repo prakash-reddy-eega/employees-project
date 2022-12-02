@@ -1,0 +1,9 @@
+<%- include('../common/header') %>
+<button id="button">Logout</button>
+<script>
+    let buttonEl = document.getElementById('button')
+    buttonEl.addEventListener('click',(event) => {
+        localStorage.removeItem('jwt_token')
+        window.location.replace("http://localhost:3000/login");
+    })
+</script>

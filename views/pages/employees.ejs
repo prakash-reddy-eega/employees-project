@@ -1,0 +1,25 @@
+<%- include('../common/header') %>
+<div>
+    <table>
+        <tr class="pl-3">
+            <th>Employee Unq Id</th>
+            <th>Employee Name</th>
+            <th>Designation</th>
+            <th>Employee Id</th>
+            <th>Department</th>
+            <th>Salary</th>
+            <th>Email Id</th>
+        </tr>
+        <% parsedData.map( eachobj => { %>
+            <tr>
+                <td> <a href= "employees/emp_id/?emp_unq_id=<%= eachobj['_id']%>"  > <%= eachobj['_id'] %>  </a> </td>
+                <td> <%= eachobj['emp_name'] %>  </td>
+                <td> <%= eachobj['designation']['designation'] %>  </td>
+                <td> <%= eachobj['emp_id'] %>  </td>
+                <td> <%= eachobj['department']['department'] %>  </td>
+                <td> <%= eachobj['salary'] %>  </td>
+                <td> <%= eachobj['email_id'] %>  </td>
+            </tr>
+       <% }) %>
+    </table>
+</div>

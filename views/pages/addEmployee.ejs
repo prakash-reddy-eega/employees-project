@@ -1,0 +1,82 @@
+<%- include('../common/header') %>
+<div>
+    <form class="d-felx flex-column" id='formData'>
+        <label for="nameInput"> Name </label>
+        <input type="text" id="nameInput" />
+        <br/>
+        <label for="designationInput">Designation</label>
+        <input type="text" id="designationInput" />
+        <br/>
+        <label for="empIdInput">Employee Id</label>
+        <input type="text" id="empIdInput" />
+        <br/>
+        <label for="departmentInput">Department</label>
+        <input type="text" id="departmentInput" />
+        <br/>
+        <label for="salaryInput">Salary</label>
+        <input type="text" id="salaryInput"/>
+        <br/>
+        <label for="emailInput">Email Id</label>
+        <input type="text" id="emailInput" />
+        <br/>
+        <button type="submit">Enter To Add Employee</button>
+    </form>
+    <p id="text"></p>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let nameEl = document.getElementById('nameInput')
+    let designationEl = document.getElementById('designationInput')
+    let empIdEl = document.getElementById('empIdInput')
+    let departmentEl = document.getElementById('departmentInput')
+    let salaryEl = document.getElementById('salaryInput')
+    let emailEl = document.getElementById('emailInput')
+    let formDataEl = document.getElementById('formData')
+    let textEl = document.getElementById('text')
+
+    let empDetailsArr = {
+        emp_name: '',
+        designation: '',
+        emp_id: '',
+        department:'',
+        salary: '',
+        email_id: ''
+    }
+   
+    
+    nameEl.addEventListener('change', (event) => {
+        empDetailsArr['emp_name'] = event.target.value
+    })
+    designationEl.addEventListener('change', (event) => {
+        empDetailsArr['designation'] = event.target.value
+    })
+    departmentEl.addEventListener('change', (event) => {
+        empDetailsArr['department'] = event.target.value
+    })
+    salaryEl.addEventListener('change', (event) => {
+        empDetailsArr['salary'] = event.target.value
+    })
+    emailEl.addEventListener('change', (event) => {
+        empDetailsArr['email_id'] = event.target.value
+    })
+    empIdEl.addEventListener('change', (event) => {
+        empDetailsArr['emp_id'] = event.target.value
+    })
+
+
+    formDataEl.addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const URL = `http://localhost:3000/employees/`;  
+        const jwtToken = localStorage.getItem("jwt_token")
+        const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${jwtToken}`
+                }
+        const response = await axios.post(URL, empDetailsArr,{headers: headers});
+        if (response.status == 201){
+            textEl.textContent = "Added Successfully"
+        } else{
+            textEl.textContent = ""
+        }
+    })
+</script>

@@ -1,0 +1,49 @@
+<%- include('../common/header') %>
+<div>
+    <form class="p-3" id="loginForm">
+        <label for="username">USERNAME</label>
+        <br/>
+        <input type="text" id="username" class="mb-2"/>
+        <br/>
+        <label for="password">PASSWORD</label>
+        <br/>
+        <input type="password" id="password" class="mb-2"/>
+        <br/>
+        <button type="submit" class="btn btn-info">Login</button>
+    </form>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let usernameEl = document.getElementById("username")
+    let passwordEl = document.getElementById("password")
+    let loginFormEl = document.getElementById("loginForm")
+    const loginDetails = {
+        username: '',
+        password: ''
+    }
+    usernameEl.addEventListener("change", event => {
+        loginDetails['username'] = event.target.value
+    })
+    passwordEl.addEventListener("change", event => {
+        loginDetails['password'] = event.target.value
+    })
+    loginFormEl.addEventListener("submit",  event => {
+        event.preventDefault()
+        const URL = "http://localhost:3000/login/authorization"
+        axios.post(URL, loginDetails).then( res => {
+            if(res.status == 200){
+                const jwtToken = localStorage.getItem('jwt_token')
+                if (jwtToken === null){
+                    localStorage.setItem('jwt_token', res.data)
+                    window.location.replace("http://localhost:3000");
+                }else{
+                    console.log(jwtToken)
+                }
+                
+            }
+        }).catch( err => {
+            console.log("-------",err)
+        })
+
+    })
+</script>

@@ -1,0 +1,55 @@
+<%- include('../common/header') %>
+
+
+
+<div>
+    <form id="myForm">
+
+        <p>Enter Employee Id</p>
+        <input type="text" id="userInput"/>        
+        <button type="submit">Enter</button>
+    </form>
+    <p id="button"></p>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let formEl = document.getElementById('myForm')
+    let userInputEl = document.getElementById('userInput')
+    let textEl = document.getElementById('button')
+    let formData ={
+        id: ""
+    }
+
+
+    userInputEl.addEventListener('change', function(event){
+        formData.id = event.target.value
+    })
+
+
+    formEl.addEventListener('submit', async function(event){
+        event.preventDefault()
+
+        const jwtToken = localStorage.getItem('jwt_token')
+        const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${jwtToken}`
+                } 
+        const URL = `http://localhost:3000/employees/${formData['id']}/`;
+        console.log(URL)
+        const response = await axios.delete(URL,{headers: headers});
+        const todoItems = response.data;
+        if (response.status == 200){
+            textEl.textContent = "Removed Successfully"
+        } else{
+            textEl.textContent = ""
+        }
+
+    })
+
+
+</script>
+
+<div>
+    <p> <%= parsedData %> </p>
+</div>
+

@@ -1,0 +1,72 @@
+<%- include('../../common/header') %>
+
+
+
+<div>
+    <form id="myForm">
+        <div>
+            <input type="radio" name="id" id="empId" value="emp_id" checked />
+            <label for="empId">Employee id</label>
+            <input type="radio" name="id" id="EmpUnqId" value="emp_unq_id"  />
+            <label for="EmpUnqId">Employee Unique id</label>
+        </div>
+        <p>Enter Id</p>
+        <input type="text" id="userInput"/>
+        <button type="submit">Enter</button>
+    </form>
+    <button id="button"  class="btn btn-outline-light"></button>
+    <p id="dbData"></p>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let formEl = document.getElementById('myForm')
+    let empIdEl = document.getElementById('empId')
+    let empUnqId = document.getElementById('EmpUnqId')
+    let userInputEl = document.getElementById('userInput')
+    let dbDataEl = document.getElementById("dbData")
+    let formData ={
+        idType: 'emp_id',
+        id: ""
+    }
+
+    empIdEl.addEventListener('change', function(event){
+        formData.idType = event.target.value
+    })
+
+    empUnqId.addEventListener('change', function(event){
+        formData.idType = event.target.value
+    })
+
+    userInputEl.addEventListener('change', function(event){
+        formData.id = event.target.value
+    })
+
+
+    formEl.addEventListener('submit', async function(event){
+        event.preventDefault()
+        const jwtToken = localStorage.getItem("jwt_token")
+        const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${jwtToken}`
+                }
+        const URL = `http://localhost:3000/employees/emp_id/?${formData['idType']}=${formData['id']}`;
+        const response = await axios.get(URL, {headers: headers});
+        const todoItems = response.data;
+
+        if (typeof(todoItems) === "string"){
+            let buttonEl = document.getElementById('button')
+            let anchorEl = document.createElement('a')
+            anchorEl.setAttribute('href', URL)
+            anchorEl.textContent="Get Emplpoyee Details"
+            buttonEl.appendChild(anchorEl)
+        }
+
+    })
+
+
+</script>
+
+
+<div>
+    <p> <%= parsedData %> </p>
+</div>
